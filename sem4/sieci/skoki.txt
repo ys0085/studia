@@ -1,0 +1,19 @@
+adres		sd	sp	ms	ms/skok
+uwr.edu.pl	10 	10	11	0.6
+berlin.de	15	16	51	1.6
+paris.fr	20	16	60	1.7
+stanford.edu	19	32	180	3.5
+fiji.travel	28	16	300	6.8
+
+
+uwr.edu.pl: 
+32B 7ms 
+1600B 14ms
+7000B 20ms
+16000B -
+	
+stanford.edu:
+32B 160ms 
+1600B 200ms
+7000B 230ms
+16000B -

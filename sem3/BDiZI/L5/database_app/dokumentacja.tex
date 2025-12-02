@@ -1,0 +1,104 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\geometry{margin=1in}
+
+\title{Dokumentacja Bazodanowa}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Opis celu aplikacji}
+
+\subsection{Cel aplikacji}
+Aplikacja umożliwia dodawanie produktów i klientów do bazy danych, oraz tworzenie zamówień oraz ich raportów na podstawie dostępnych produktów.
+
+\subsection{Charakterystyka użytkowników}
+\begin{itemize}
+    \item Dodawanie i usuwanie produktów.
+    \item Zarządzanie użytkownikami i zamówieniami.
+    \item Generowanie raportów sprzedaży.
+    \item Przeglądanie katalogu produktów.
+    \item Składanie zamówień.
+    \item Sprawdzanie historii zamówień.
+    
+\end{itemize}
+
+\section{Modelowanie logiczne}
+
+\subsection{Opis encji}
+\begin{itemize}
+    \item \textbf{Klienci:} \texttt{client\_id (PK)}, \texttt{first\_name}, \texttt{last\_name}, \texttt{email}.
+    \item \textbf{Produkty:} \texttt{product\_id (PK)}, \texttt{name}, \texttt{description}, \texttt{price}, \texttt{stock}.
+    \item \textbf{Zamówienia:} \texttt{order\_id (PK)}, \texttt{client\_id (FK)}, \texttt{Order\_date}, \texttt{status}.
+    \item \textbf{Szczegóły zamówień:} \texttt{order\_detail\_id (PK)}, \texttt{order\_id (FK)}, \texttt{product\_id (FK)}, \texttt{count}, \texttt{price}.
+    \item \textbf{Płatności:} \texttt{payment\_id (PK)}, \texttt{order\_id (FK)}, \texttt{amount}, \texttt{payment\_type}, \texttt{payment\_date}.
+    \item \textbf{Raporty:} \texttt{report\_id (PK)}, \texttt{date}, \texttt{order\_count}, \texttt{total\_income}.
+\end{itemize}
+
+\pagebreak
+
+\subsection{Diagram ER}
+Ten diagram ER przedstawia relacje między tabelami.
+\newline
+
+\includegraphics[scale=0.4]{ER diagram.png}
+
+\section{Normalizacja bazy danych}
+
+\subsection{Proces normalizacji}
+\begin{enumerate}
+    \item \textbf{1NF:} Wszystkie tabele mają atrybuty atomowe.
+    \item \textbf{2NF:} Wszystkie atrybuty są zależne od klucza głównego (brak redundancji w szczegółach zamówień i płatnościach).
+    \item \textbf{3NF:} Brak zależności przechodnich (np. dane użytkowników są w osobnej tabeli, nie są trzymane w zamówieniach).
+\end{enumerate}
+
+\section{Klucze w relacjach}
+
+\subsection{Tabela Zamówienia}
+\begin{itemize}
+    \item \textbf{Klucz podstawowy:} \texttt{order\_id}.
+    \item \textbf{Klucz obcy:} \texttt{client\_id}.
+\end{itemize}
+
+\subsection{Tabela Klienci}
+\begin{itemize}
+    \item \textbf{Klucz podstawowy:} \texttt{client\_id}.
+\end{itemize}
+
+\subsection{Tabela Produkty}
+\begin{itemize}
+    \item \textbf{Klucz podstawowy:} \texttt{product\_id}.
+\end{itemize}
+
+\subsection{Tabela Płatności}
+\begin{itemize}
+    \item \textbf{Klucz podstawowy:} \texttt{payment\_id}.
+    \item \textbf{Klucz obcy:} \texttt{order\_id}.
+\end{itemize}
+
+\subsection{Tabela Raporty}
+\begin{itemize}
+    \item \textbf{Klucz podstawowy:} \texttt{report\_id}.
+\end{itemize}
+\subsection{Tabela Szczegóły Zamówień}
+\begin{itemize}
+    \item \textbf{Klucz podstawowy:} \texttt{order\_detail\_id}.
+    \item \textbf{Klucz obcy:} \texttt{order\_id}.
+    \item \textbf{Klucz obcy:} \texttt{product\_id}.
+\end{itemize}
+
+
+\end{document}

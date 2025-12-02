@@ -1,0 +1,339 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, total={6in, 9in}]{geometry}
+\usepackage{float}
+
+\graphicspath{{img/}}
+\title{Lista 2}
+\author{Krzysztof Kleszcz}
+\date{29.10.2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Wprowadzenie}
+Wszystkie przedstawione poniżej całki zostały oszacowane metodą probabilistyczną podaną w zadaniu. 
+Do przeprowadzenia symulacji został użyty generator liczb losowych \emph{Mersenne Twister}.
+\paragraph{Implementacja.}
+Algorytm został zaimplementowany w języku programowania \emph{Java}.
+Plik \verb|Program.jar| jest skompilowany i gotowy do uruchomienia poleceniem 
+\begin{center}
+    \begin{verbatim}
+
+        java -jar Program.jar > data.txt
+    \end{verbatim}
+\end{center}
+Plik \verb|data.txt| to dane wygenerowane przez program.
+
+\paragraph{Wizualizacja.}
+Dane wygenerowane przez program w \emph{Javie} zostały wprowadzone do skryptu w języku \emph{Python} oraz za pomocą 
+biblioteki \emph{matplotlib} ukazane na wykresach. Skrypt znajduje się w pliku \verb|main.py|.
+\newline
+
+Punkty o kolorze niebieskim oznaczają wyniki pojedynczych testów, a punkty o kolorze czerwonym to średnia wartość
+wyników wszystkich testów dla danej liczby urn \emph{n}. 
+\pagebreak
+
+\section{Wyniki}
+
+\paragraph{A}
+Paradoks urodzinowy (ang. \emph{Birthday paradox}), czyli kula która pierwsza wpada do niepustej urny.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Bn.png}
+    \begin{center}
+        (a) Wykres \begin{math}
+            B_n
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Jak widać na wykresie (a), wartość $B_n$ jest słabo skoncentrowana. Jej średnie wartości układają się w kształt krzywej,
+która przypomina 
+\begin{math}
+    f(x) = \sqrt{x}
+\end{math}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgB_over_n.png}
+    \begin{center}
+        (b) Wykres \begin{math}
+            \frac{b(n)}{n}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgB_over_sqrt_n.png}
+    \begin{center}
+        (c) Wykres \begin{math}
+            \frac{b(n)}{\sqrt{n}}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Wykres (c) potwierdza to podejrzenie, widać, że wartości ilorazu \begin{math}
+    \frac{b(n)}{\sqrt{n}}
+\end{math}
+trzymają się mniej więcej w zakresie $(1.1; 1.5)$. Można więc postawić hipotezę, że wartość \begin{math}
+    b(n)
+\end{math} rośnie asymptotycznie z $\sqrt{x}$.
+
+\paragraph{}
+
+Nazwa \emph{birthday paradox} pochodzi od innej wersji tego samego problemu -- zamiast wrzucać $m$ kul do $n$ urn, 
+wybieramy osoby i przydzielamy im losowo urodziny -- stąd \emph{birthday} -- i sprawdzamy, 
+kiedy dwie osoby będą miały urodziny tego samego dnia. Ta wersja problemu jest jednoznaczna z wrzucaniem 
+m kul do 365 urn i obserwowaniu, czy dwie kule znajdują się w jednej urnie. 
+Nie jest to jednak prawdziwy "paradoks".
+Słowo \emph{paradox} bierze się z nieintuicyjnego wyników tego problemu -- okazuje się, że już dla 23 osób szansa, 
+że istnieje para osób z tą samą datą urodzin, wynosi 50\%. Dla 70 osób ta szansa wynosi aż 99,9\%.
+
+
+\paragraph{}
+
+Paradoksu urodzinowego można używać również w kryptografii, np. w testowaniu funkcji haszujących. 
+Tzw. atak urodzinowy (ang. \emph{birthday attack}) pomaga w wykrywaniu kolizji w funkcjach haszujących poprzez generowanie 
+i haszowanie kolejnych wiadomości i sprawdzanie, czy dwa hasze są takie same.
+
+\pagebreak
+
+\paragraph{B}
+
+Wartość $U_n$, czyli liczba pustych urn po wrzuceniu $n$ kul (tyle kul co urn).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Un.png}
+    \begin{center}
+        (a) Wykres \begin{math}
+            U_n
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Jak widać na wykresie (a), wartość $U_n$ jest mocno skoncentrowana. Zdaje się rosnąć liniowo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgU_over_n.png}
+    \begin{center}
+        (b) Wykres \begin{math}
+            \frac{u(n)}{n}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Wykres (b) potwierdza tę intuicję -- wartość $\frac{u(n)}{n}$ jest mniej więcej stała, równa około $0.368$.
+Ta liczba jest podejrzanie blisko do wartości $\frac{1}{e} = 0.36788...$ -- można postwić hipotezę, że 
+\begin{math}
+    u(n) = \frac{1}{e}  n.
+\end{math}
+
+\pagebreak
+
+\paragraph{C}
+
+Wartość $C_n$, czyli kula, po której wrzuceniu nie ma żadnej pustej urny -- tzw. problem kolekcjonera kuponów 
+(ang. \emph{coupon collector's problem}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Cn.png}
+    \begin{center}
+        (a) Wykres \begin{math}
+            C_n
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Wartości na wykresie (a) nie są mocno rozproszone, lecz ich rozproszenie zwiększa się dla większych $n$.
+Na pierwszy rzut oka $C_n$ zdaje się rosnąć liniowo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgC_over_n.png}
+    \begin{center}
+        (b) Wykres \begin{math}
+            \frac{c(n)}{n}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgC_over_n_ln_n.png}
+    \begin{center}
+        (c) Wykres \begin{math}
+            \frac{c(n)}{n \ln n}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgC_over_n2.png}
+    \begin{center}
+        (d) Wykres \begin{math}
+            \frac{c(n)}{n^2}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Na wykresach (b, c, d) widać, że wartość $\frac{c(n)}{n \ln n}$ jest mniej więcej stała. Można postawić hipotezę,
+że $c(n)$ rośnie asymptyotycznie do $n \ln n$.
+
+\paragraph{}
+Nazwa "problem kolekcjonera kuponów" wynika z innej postaci tego problemu -- możemy sobie wyobrazić, 
+że kolekcjoner szuka łącznie $n$ rozróżnialnych kuponów do swojej kolekcji. Każdy kupon, 
+który dodaje do swojej kolekcji jest losowy (kolekcjoner może go już posiadać). 
+$c(n)$ to liczba kuponów kolekcjoner dodał do swojej kolekcji w momencie, gdy znalazł wszystkie kupony.
+
+\pagebreak
+
+\paragraph{D}
+
+Wartość $D_n$, czyli kula, po której wrzuceniu w każdej urnie są co najmniej dwie kule. -- tzw. brat kolekcjonera kuponów 
+(ang. \emph{coupon collector's brother}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Dn.png}
+    \begin{center}
+        (a) Wykres \begin{math}
+            D_n
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Wykres (a) wygląda bardzo podobnie do wykresu $C_n$, jest podobnie rozproszony. Również wygląda, jak by rósł liniowo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgD_over_n.png}
+    \begin{center}
+        (b) Wykres \begin{math}
+            \frac{d(n)}{n}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgD_over_n_ln_n.png}
+    \begin{center}
+        (c) Wykres \begin{math}
+            \frac{d(n)}{n \ln n}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgD_over_n2.png}
+    \begin{center}
+        (d) Wykres \begin{math}
+            \frac{d(n)}{n^2}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Ciężko jest postawić hipotezę na temat wartości $d(n)$. Nie rośnie ona liniowo (b), ani kwadratowo (d).
+Wykres (c) lekko maleje, co może być błędem pomiaru, lecz nie można z niego wyciągnąć dobrej hipotezy.
+Można jedynie zgadywać, że $d(n)$ rośnie asymptotycznie do $n \ln n$ lub ewentualnie $n \ln \ln n$.
+
+\pagebreak
+
+\paragraph{E}
+
+Wartość $D_n - C_n$, czyli ilość kul od momentu, gdy każda urna ma co najmniej jedną kulę do momentu, gdy każda urna ma co najmniej dwie kule.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Dn_minus_Cn.png}
+    \begin{center}
+        (a) Wykres \begin{math}
+            D_n
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Wykres (a) jest mocno rozproszony. Ciężko określić jego tempo wzrostu, lecz wygląda na liniowy.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgD_minus_C_over_n.png}
+    \begin{center}
+        (b) Wykres \begin{math}
+            \frac{d(n) - c(n)}{n}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgD_minus_C_over_n_ln_n.png}
+    \begin{center}
+        (c) Wykres \begin{math}
+            \frac{d(n) - c(n)}{n \ln n}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{avgD_minus_C_over_n_ln_ln_n.png}
+    \begin{center}
+        (d) Wykres \begin{math}
+            \frac{d(n) - c(n)}{n \ln \ln n}
+        \end{math} od \begin{math}
+            n
+        \end{math}.
+    \end{center}
+\end{figure}
+
+Z danych z wykresów (b, c, d) jest trudno określić tempo wzrostu $d(n) - c(n)$. Wykres (c) zdaje się maleć, 
+lecz wykresy (b, d) oba wyglądają na stałe. 
+Można postawić następujące hipotezy -- $d(n) - c(n)$ rośnie asymptotycznie z $n$ lub z $n \ln \ln n$.
+
+
+\end{document}
+

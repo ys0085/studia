@@ -1,0 +1,357 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{%
+Obliczenia naukowe - Lista nr 2\\[0.5em]
+\large Sprawozdanie z laboratorium w języku Julia
+}
+\author{Krzysztof Kleszcz}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+
+\section{Zadanie 1}
+\subsection*{Opis problemu}
+Celem było badanie wpływu małych zmian danych wejściowych na wynik obliczeń.
+
+\subsection*{Wyniki}
+\begin{table}[h!]
+\centering
+\caption{Porównanie wartości przed i po zmianie dla Float32 i Float64}
+\begin{tabular}{lcc}
+\hline
+\textbf{Typ} & \textbf{Przed zmianą} & \textbf{Po zmianie} \\
+\hline
+Float32 & -0.4999443 & -0.4999443 \\
+Float32 & -0.4543457 & -0.4543457 \\
+Float32 & -0.5 & -0.5 \\
+Float32 & -0.5 & -0.5 \\
+Float32 & -0.34720382 & -0.34720382 \\
+\hline
+Float64 & 1.0251881368296672e-10 & -0.004296342739891585 \\
+Float64 & -1.5643308870494366e-10 & -0.004296342998713953 \\
+Float64 & 0.0 & -0.004296342842280865 \\
+Float64 & 0.0 & -0.004296342842280865 \\
+Float64 & 1.0251881368296672e-10 & -0.004296342739891585 \\
+\hline
+\end{tabular}
+\end{table}
+\subsection*{Interpretacja}
+Dla typu \texttt{Float32} wyniki nie zmieniły się ani trochę: zmiana była zbyt mała, aby wpłynąć na reprezentację liczby.
+Dla typu \texttt{Float64} wyniki bardzo się zmieniły - wcześniej błąd względny był bardzo duży, a w niektórych przypadkach wynik wyniósł zero.
+Po zmianie wartości wejściowych na mniej precyzyjne, błąd względny zmalał znacząco. Ta różnica jednej cyfry znaczącej w reprezentacji dziesiętnej 
+wystarczyła, by wyeliminować problemy z utratą precyzji w obliczeniach.
+
+\section{Zadanie 2}
+\subsection*{Opis problemu}
+Analiza grafu funkcji $f(x) = e^{x} \cdot \ln(1 + e^{-x})$ w celu znalezienia obszarów utraty precyzji.
+
+\subsection*{Wyniki}
+Do wygenerowania wykresu użyto skryptu w Pythonie (plik \texttt{graph.py}) oraz kalkulatora graficznego Desmos.
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/zad2_1.png}
+\includegraphics[width=0.7\textwidth]{img/zad2_2.png}
+\end{center}
+
+\subsection*{Wnioski}
+Granica analizowanej funkcji dla $x \to \infty$ wynosi $1$, i faktycznie na wykresie widać, że funkcja do pewnego momentu dąży do tej wartości.
+Funkcja traci precyzję dla wartości $x > 30$ z powodu mnożenia przez bardzo małe wartości $\ln(1 + e^{-x})$, aż w pewnym momencie dla $x > 40$ wynik się zeruje. 
+Wynika to z faktu, że $e^{-x}$ staje się na tyle małe, że $1 + e^{-x}$ jest zaokrąglane do $1$ w arytmetyce zmiennopozycyjnej, a $\ln(1) = 0$.
+
+
+\section{Zadanie 3}
+\subsection*{Opis problemu}
+Zbadano metody rozwiązywania układu równań z macierzą Hilberta i losowymi macierzami o różnych wskaźnikach uwarunkowania.
+\subsection*{Rozwiązanie}
+Rozwiązywano układy równań postaci $Ax = b$, na dwa sposoby: eliminacji Gaussa oraz inwersji macierzy $A$ i policzono błąd względny dla obu metod.
+
+\subsection*{Wyniki}
+\begin{table}[h!]
+\centering
+\caption{Macierze Hilberta: zależność błędu od liczby n i uwarunkowania macierzy}
+\begin{tabular}{rccc}
+\hline
+\textbf{n} & \textbf{cond(A)} & \textbf{err1} & \textbf{err2} \\
+\hline
+2  & 1.93e+01 & 5.66e-16 & 1.40e-15 \\
+3  & 5.24e+02 & 8.02e-15 & 0.00e+00 \\
+4  & 1.55e+04 & 4.14e-14 & 0.00e+00 \\
+5  & 4.77e+05 & 1.68e-12 & 3.35e-12 \\
+6  & 1.50e+07 & 2.62e-10 & 2.02e-10 \\
+7  & 4.75e+08 & 1.26e-08 & 4.71e-09 \\
+8  & 1.53e+10 & 6.12e-08 & 3.08e-07 \\
+9  & 4.93e+11 & 3.88e-06 & 4.54e-06 \\
+10 & 1.60e+13 & 8.67e-05 & 2.50e-04 \\
+11 & 5.22e+14 & 1.58e-04 & 7.62e-03 \\
+12 & 1.76e+16 & 1.34e-01 & 2.59e-01 \\
+13 & 3.19e+18 & 1.10e-01 & 5.33e+00 \\
+14 & 9.28e+17 & 1.46e+00 & 8.71e+00 \\
+15 & 3.68e+17 & 4.70e+00 & 7.34e+00 \\
+16 & 7.06e+17 & 5.42e+01 & 2.98e+01 \\
+\hline
+\end{tabular}
+\end{table}
+\begin{table}[h!]
+\centering
+\caption{Macierze o zadanym condition number: wpływ $c$ i rozmiaru $n$ na błędy}
+\begin{tabular}{rccccc}
+\hline
+\textbf{n} & \textbf{c} & \textbf{cond(A)} & \textbf{err1} & \textbf{err2} \\
+\hline
+5  & 1e+00 & 1.00e+00 & 2.05e-16 & 9.93e-17 \\
+5  & 1e+01 & 1.00e+01 & 1.79e-16 & 1.49e-16 \\
+5  & 1e+03 & 1.00e+03 & 6.65e-15 & 7.94e-15 \\
+5  & 1e+07 & 1.00e+07 & 1.78e-10 & 2.25e-10 \\
+5  & 1e+12 & 1.00e+12 & 1.17e-05 & 1.61e-05 \\
+5  & 1e+16 & 7.78e+15 & 1.24e-01 & 1.16e-01 \\
+10 & 1e+00 & 1.00e+00 & 2.53e-16 & 2.98e-16 \\
+10 & 1e+01 & 1.00e+01 & 2.14e-16 & 2.48e-16 \\
+10 & 1e+03 & 1.00e+03 & 8.12e-15 & 9.27e-15 \\
+10 & 1e+07 & 1.00e+07 & 2.80e-12 & 1.69e-11 \\
+10 & 1e+12 & 1.00e+12 & 3.32e-05 & 2.48e-05 \\
+10 & 1e+16 & 1.08e+16 & 2.18e-01 & 1.69e-01 \\
+20 & 1e+00 & 1.00e+00 & 5.15e-16 & 2.83e-16 \\
+20 & 1e+01 & 1.00e+01 & 8.56e-16 & 6.00e-16 \\
+20 & 1e+03 & 1.00e+03 & 2.39e-14 & 2.67e-14 \\
+20 & 1e+07 & 1.00e+07 & 1.95e-10 & 1.90e-10 \\
+20 & 1e+12 & 1.00e+12 & 1.45e-05 & 1.02e-05 \\
+20 & 1e+16 & 9.25e+15 & 7.83e-02 & 9.84e-02 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{Interpretacja}
+Błędy względne dla obu sposobów rozwiązywania są bardzo podobne - nie ma tu większego znaczenia, którą metodę się wybierze, lecz jedna z nich może być bardziej efektywna obliczeniowo w zależności od konkretnego przypadku.
+Dla macierzy Hilberta błąd rośnie bardzo szybko wraz z rozmiarem macierzy, już dla $n=12$ błąd jest rzędu $10^-1$.
+Dla losowych macierzy z kontrolowanym wskaźnikiem uwarunkowania błąd rośnie wraz z jego wzrostem. Dla wskaźnika rzędu $10^{16}$ błąd wynosi rzędu $10^{-1}$.
+Wielkość macierzy nie ma tutaj większego wpływu na błąd, liczy się głównie wskaźnik uwarunkowania.
+
+\section{Zadanie 4}
+\subsection*{Opis problemu}
+Analiza ``złośliwego wielomianu'' Wilkinsona, obliczenie jego pierwiastków oraz badanie wpływu małych zaburzeń współczynników na pierwiastki.
+\subsection*{Wyniki}
+\begin{table}[h!]
+\centering
+\caption{Obliczone pierwiastki wielomianu $P$}
+\begin{tabular}{r r r r r r}
+\hline
+$k$ & $\operatorname{Re}(z_k)$ & $\operatorname{Im}(z_k)$ & $|P(z_k)|$ & $|p(z_k)|$ & $|z_k-k|$ \\
+\hline
+1  & 1.0              & 0.0 & 2.33e+04 & 2.33e+04 & 1.92e-13 \\
+2  & 2.0              & 0.0 & 6.46e+04 & 7.32e+04 & 1.14e-11 \\
+3  & 2.9999999998     & 0.0 & 1.89e+04 & 1.30e+05 & 1.83e-10 \\
+4  & 3.9999999838     & 0.0 & 2.64e+06 & 2.03e+06 & 1.62e-08 \\
+5  & 5.0000006887     & 0.0 & 2.37e+07 & 2.16e+07 & 6.89e-07 \\
+6  & 5.9999883716     & 0.0 & 1.26e+08 & 1.22e+08 & 1.16e-05 \\
+7  & 7.0001129108     & 0.0 & 5.23e+08 & 5.06e+08 & 1.13e-04 \\
+8  & 7.9992794063     & 0.0 & 1.80e+09 & 1.74e+09 & 7.21e-04 \\
+9  & 9.0032738311     & 0.0 & 5.12e+09 & 5.26e+09 & 3.27e-03 \\
+10 & 9.9892656878     & 0.0 & 1.42e+10 & 1.41e+10 & 1.07e-02 \\
+11 & 11.0279975586    & 0.0 & 3.59e+10 & 3.69e+10 & 2.80e-02 \\
+12 & 11.9482739584    & 0.0 & 8.51e+10 & 8.16e+10 & 5.17e-02 \\
+13 & 13.082031972     & 0.0 & 2.21e+11 & 2.04e+11 & 8.20e-02 \\
+14 & 13.9068005652    & 0.0 & 3.81e+11 & 3.85e+11 & 9.32e-02 \\
+15 & 15.0814392994    & 0.0 & 8.81e+11 & 9.13e+11 & 8.14e-02 \\
+16 & 15.9424043187    & 0.0 & 1.67e+12 & 1.68e+12 & 5.76e-02 \\
+17 & 17.0268618315    & 0.0 & 3.31e+12 & 3.51e+12 & 2.69e-02 \\
+18 & 17.9904846234    & 0.0 & 6.17e+12 & 6.64e+12 & 9.52e-03 \\
+19 & 19.001981085     & 0.0 & 1.41e+13 & 1.27e+13 & 1.98e-03 \\
+20 & 19.9998039081    & 0.0 & 3.28e+13 & 2.38e+13 & 1.96e-04 \\
+\hline
+\end{tabular}
+\label{tab:roots_P}
+\end{table}
+\begin{table}[h!]
+\centering
+\caption{Porównanie: wartość oryginalna vs zaburzona (Re/Im) i różnica}
+\begin{tabular}{r r r r r}
+\hline
+$k$ & $\operatorname{Re}(z_k)$ -- oryginalny & $\operatorname{Re}(z_k)$ -- zaburzony & $\operatorname{Im}(z_k)$ -- zaburzony & Różnica \\
+\hline
+1  & 1.000000   & 1.000000   & 0.000000   & 1.72e-13 \\
+2  & 2.000000   & 2.000000   & 0.000000   & 1.29e-11 \\
+3  & 3.000000   & 3.000000   & 0.000000   & 2.88e-10 \\
+4  & 4.000000   & 4.000000   & 0.000000   & 1.12e-08 \\
+5  & 5.000001   & 5.000000   & 0.000000   & 6.54e-07 \\
+6  & 5.999988   & 6.000006   & 0.000000   & 1.75e-05 \\
+7  & 7.000113   & 6.999704   & 0.000000   & 4.08e-04 \\
+8  & 7.999279   & 8.007227   & 0.000000   & 7.95e-03 \\
+9  & 9.003274   & 8.917397   & 0.000000   & 8.59e-02 \\
+10 & 9.989266   & 10.095290  & -0.643277  & 6.52e-01 \\
+11 & 11.027998  & 10.095290  & 0.643277   & 1.13e+00 \\
+12 & 11.948274  & 11.793589  & -1.652254  & 1.66e+00 \\
+13 & 13.082032  & 11.793589  & 1.652254   & 2.10e+00 \\
+14 & 13.906801  & 13.992331  & -2.518820  & 2.52e+00 \\
+15 & 15.081439  & 13.992331  & 2.518820   & 2.74e+00 \\
+16 & 15.942404  & 16.730730  & -2.812627  & 2.92e+00 \\
+17 & 17.026862  & 16.730730  & 2.812627   & 2.83e+00 \\
+18 & 17.990485  & 19.502439  & -1.940332  & 2.46e+00 \\
+19 & 19.001981  & 19.502439  & 1.940332   & 2.00e+00 \\
+20 & 19.999804  & 20.846909  & 0.000000   & 8.47e-01 \\
+\hline
+\end{tabular}
+\label{tab:orig_vs_perturbed}
+\end{table}
+
+
+\subsection*{Interpretacja}
+Obliczenie pierwiastków oryginalnego wielomianu dało wyniki dość bliskie oczekiwanym, z maksymalnymi błędami bezwzględnymi rzędu $10^{-2}$, dla pierwiastków bliższych $20$.
+Jendak po wprowadzeniu obliczonych pierwiastków do oryginanego wielomianu oraz do wielomianu wygenerowanego z prawidłówych pierwiastków, 
+Wartości te zmieniły się znacząco, wynik powinien w każdym przypadku wynieść $0$, a jednak nawet dla pierwiastków z najmniejszym błędem wynik obliczenia wynosi $2.3 \times 10^{4}$.
+Dla najgorszych błędów wynik wynosi nawet $3.3 \times 10^{13}$.
+\newline
+Po wprowadzeniu małego zaburzenia współczynników wielomianu, pierwiastki zmieniły się znacząco, róznice sięgnęły nawet wartości rzędu $10^{0}$. 
+Warto zauważyć, że niektóre z pierwiastków zmodyfikowanego wielomianu mają również części urojone. 
+Do analizy różnicy wartości pierwiastków użyłem odległości na płaszczyźnie zespolonej.
+
+\section{Zadanie 5}
+\subsection*{Opis problemu}
+Analiza modelu logistycznego $p_{n+1} = p_n + r \cdot p_n \cdot (1 - p_n)$ dla różnych precyzji arytmetyki zmiennopozycyjnej, 
+oraz analiza przypadku, gdy po każdym kroku wartość jest zaokrąglana do trzech cyfr znaczących.
+\subsection*{Wyniki}
+
+
+
+
+\begin{table}[H]
+\centering
+\caption{Wyniki obliczeń – wartości Float32 przed i po obcięciu}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Iter} & \textbf{Float32} & \textbf{Po obcięciu} \\ \hline
+0  & 0.010000 & 0.010000 \\ 
+1  & 0.039700 & 0.039700 \\ 
+2  & 0.154072 & 0.154072 \\ 
+3  & 0.545073 & 0.545073 \\ 
+4  & 1.288978 & 1.288978 \\ 
+5  & 0.171519 & 0.171519 \\ 
+6  & 0.597819 & 0.597819 \\ 
+7  & 1.319113 & 1.319113 \\ 
+8  & 0.056273 & 0.056273 \\ 
+9  & 0.215593 & 0.215593 \\ 
+10 & 0.722931 & 0.722931 \\ 
+11 & 1.323836 & 1.323813 \\ 
+12 & 0.037717 & 0.037810 \\ 
+13 & 0.146600 & 0.146950 \\ 
+14 & 0.521926 & 0.523016 \\ 
+15 & 1.270484 & 1.271427 \\ 
+16 & 0.239548 & 0.236128 \\ 
+17 & 0.786043 & 0.777243 \\ 
+18 & 1.290581 & 1.296652 \\ 
+19 & 0.165525 & 0.142689 \\ 
+20 & 0.579904 & 0.509674 \\ 
+21 & 1.310750 & 1.259393 \\ 
+22 & 0.088804 & 0.279359 \\ 
+23 & 0.331558 & 0.883312 \\ 
+24 & 0.996441 & 1.192528 \\ 
+25 & 1.007081 & 0.503743 \\ 
+26 & 0.985689 & 1.253701 \\ 
+27 & 1.028009 & 0.299506 \\ 
+28 & 0.941629 & 0.928913 \\ 
+29 & 1.106520 & 1.127013 \\ 
+30 & 0.752921 & 0.697576 \\ 
+31 & 1.311014 & 1.330467 \\ 
+32 & 0.087783 & 0.011440 \\ 
+33 & 0.328015 & 0.045367 \\ 
+34 & 0.989278 & 0.175292 \\ 
+35 & 1.021099 & 0.608986 \\ 
+36 & 0.956467 & 1.323352 \\ 
+37 & 1.081381 & 0.039626 \\ 
+38 & 0.817368 & 0.153794 \\ 
+39 & 1.265200 & 0.544218 \\ 
+40 & 0.258605 & 1.288352 \\ \hline
+\end{tabular}
+\end{table}
+\begin{table}[H]
+\centering
+\caption{Porównanie Float32 i Float64}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Iter} & \textbf{Float32} & \textbf{Float64} & \textbf{Różnica (diff)} \\ \hline
+0  & 0.010000 & 0.010000 & 2.235e-10 \\ 
+1  & 0.039700 & 0.039700 & 1.478e-09 \\ 
+2  & 0.1540717 & 0.15407173 & 3.356e-09 \\ 
+3  & 0.5450726 & 0.545072626 & 1.090e-08 \\ 
+4  & 1.288978 & 1.288978001 & 9.863e-08 \\ 
+5  & 0.1715188 & 0.171519142 & 3.395e-07 \\ 
+6  & 0.5978191 & 0.597820120 & 1.030e-06 \\ 
+7  & 1.319113 & 1.319113792 & 4.187e-07 \\ 
+8  & 0.05627322 & 0.056271578 & 1.644e-06 \\ 
+9  & 0.2155929 & 0.215586839 & 6.022e-06 \\ 
+10 & 0.7229306 & 0.722914301 & 1.631e-05 \\ 
+11 & 1.323836 & 1.323841944 & 5.498e-06 \\ 
+12 & 0.03771698 & 0.037695297 & 2.169e-05 \\ 
+13 & 0.1466002 & 0.146518383 & 8.183e-05 \\ 
+14 & 0.521926 & 0.521670621 & 2.554e-04 \\ 
+15 & 1.270484 & 1.270261774 & 2.220e-04 \\ 
+16 & 0.2395482 & 0.240352173 & 8.040e-04 \\ 
+17 & 0.7860428 & 0.788101190 & 2.058e-03 \\ 
+18 & 1.290581 & 1.289094303 & 1.487e-03 \\ 
+19 & 0.1655247 & 0.171084847 & 5.560e-03 \\ 
+20 & 0.5799036 & 0.596529312 & 1.663e-02 \\ 
+21 & 1.310750 & 1.318575588 & 7.826e-03 \\ 
+22 & 0.08880424 & 0.058377608 & 3.043e-02 \\ 
+23 & 0.3315584 & 0.223286598 & 1.083e-01 \\ 
+24 & 0.9964407 & 0.743575676 & 2.529e-01 \\ 
+25 & 1.007081 & 1.315588346 & 3.085e-01 \\ 
+26 & 0.9856885 & 0.070035296 & 9.157e-01 \\ 
+27 & 1.028009 & 0.265426355 & 7.626e-01 \\ 
+28 & 0.9416294 & 0.850351969 & 9.128e-02 \\ 
+29 & 1.106520 & 1.232112462 & 1.256e-01 \\ 
+30 & 0.7529209 & 0.374146490 & 3.788e-01 \\ 
+31 & 1.311014 & 1.076629171 & 2.344e-01 \\ 
+32 & 0.0877831 & 0.829125567 & 7.413e-01 \\ 
+33 & 0.3280148 & 1.254154650 & 9.261e-01 \\ 
+34 & 0.9892781 & 0.297906941 & 6.914e-01 \\ 
+35 & 1.021099 & 0.925382129 & 9.572e-02 \\ 
+36 & 0.9564666 & 1.132532263 & 1.761e-01 \\ 
+37 & 1.081381 & 0.682241073 & 3.991e-01 \\ 
+38 & 0.8173683 & 1.332605647 & 5.152e-01 \\ 
+39 & 1.265200 & 0.002909157 & 1.262e+00 \\ 
+40 & 0.2586055 & 0.011611238 & 2.470e-01 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection*{Interpretacja}
+Obcinanie cyfr znaczących prowadzi do kompletnego rozbieżenia wyników w porównaniu do obliczeń bez obcinania, już po kilkunastu iteracjach.
+Przy czterdziestej iteracji wartości różnią się już na poziomie jednostek - wynik nie ma nic wspólnego z oryginalnym.
+\newline
+Porównanie arytmetyki \texttt{Float32} i \texttt{Float64} nie wykazało aż tak drastycznych różnic, jednak \texttt{Float32} prowadzi do zauważalnych odchyleń od wyniku z \texttt{Float64}.
+W przypadku \texttt{Float32} po około 20 iteracjach wyniki zaczynają się różnić na poziomie setnych części, i od tamtego momentu błąd rośnie coraz szybciej, aż przy 30 iteracji wyniki są kompletnie rozbieżne.
+
+
+\section{Zadanie 6}
+\subsection*{Opis problemu}
+Przeprowadzenie eksperymentu używając różnych danych wejściowych $c$ i $x_0$ dla rówanania rekurencyjnego:
+\[x_{n+1} := x_n^2 + c \text{ dla } n = 0, 1, \dots\]
+\subsection*{Wyniki}
+\begin{itemize}
+    \item Dla $c = -2$ i $x_0 = 1$ ciąg stabilnie zbiega do $-1$.
+    \item Dla $c = -2$ i $x_0 = 2$ ciąg trzyma się wartości $2$.
+    \item Dla $c = -2$ i $x_0 = 1.99999999999999$ ciąg przez długi czas trzyma się blisko $x_0$, ale po wielu iteracjach zaczyna "chaotycznie" przyjmować wartości między $-2$ i $2$.
+    \item Dla $c = -1$ i $x_0 = 1$ ciąg oscyluje między wartościami $0$ i $-1$.
+    \item Dla $c = -1$ i $x_0 = -1$ ciąg również oscyluje między wartościami $0$ i $-1$.
+    \item Dla $c = -1$ i $x_0 = 0.75$ ciąg oscyluje między dwoma wartościami, które zbliząją się do $-1$ i $0$, aż w pewnym momencie je osiąga i oscyluje między nimi.
+    \item Dla $c = -1$ i $x_0 = 0.25$ podobnie jak wyżej, ale ciąg osiąga końcowe wartości szybciej.
+\end{itemize}
+
+\subsection*{Wnioski}
+Wynik punktu 3 pokazuje, jak bardzo wrażliwy jest ten układ na warunki początkowe - minimalna zmiana w $x_0$ prowadzi do zupełnie innego zachowania ciągu po wielu iteracjach.
+Z wyników punktów 6 i 7 wynika, że w arytmetyce zmiennopozycyjnej ciąg który powinien dążyć do pewnych dwóch wartości, ostatecznie je osiąga i zatrzymuje się na nich, co jest efektem ograniczonej precyzji reprezentacji liczb.
+
+
+
+\end{document}

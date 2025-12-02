@@ -1,0 +1,63 @@
+body { 
+    font-family: Arial, sans-serif; 
+    text-align: center; 
+    margin: 0; 
+    padding: 0; 
+    background: #f0f0f0; 
+}
+h1 { 
+    margin-top: 20px; 
+}
+#wordContainer { 
+    margin: 20px; 
+    font-size: 2em; 
+    letter-spacing: 10px; 
+}
+#lettersContainer { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    max-width: 600px;
+    margin: auto; 
+}
+.letter { 
+    border: 1px solid #333; 
+    padding: 10px; 
+    margin: 5px; 
+    cursor: pointer; 
+    width: 30px; 
+    background: white; 
+    border-radius: 5px; 
+    user-select: none; 
+}
+.letter.used { 
+    background: lightblue; 
+    cursor: default; 
+}
+canvas { 
+    background: white;
+    margin-top: 20px; 
+    border: 1px solid #333;
+}
+#result { 
+    font-size: 1.5em; 
+    margin: 20px; 
+}
+button { 
+    margin: 10px; 
+    padding: 10px 20px; 
+    font-size: 1em; 
+    cursor: pointer; 
+}
+#backButton {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1em;
+    text-decoration: none;
+    color: black;
+    border: 1px solid black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: white;
+}

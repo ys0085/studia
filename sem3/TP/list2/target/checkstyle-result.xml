@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.3">
+<file name="C:\Users\Lenovo\Documents\TP\list2\src\main\java\com\tp\App.java">
+</file>
+<file name="C:\Users\Lenovo\Documents\TP\list2\src\main\java\com\tp\Book.java">
+</file>
+<file name="C:\Users\Lenovo\Documents\TP\list2\src\main\java\com\tp\CommandSubject.java">
+</file>
+<file name="C:\Users\Lenovo\Documents\TP\list2\src\main\java\com\tp\Customer.java">
+</file>
+<file name="C:\Users\Lenovo\Documents\TP\list2\src\main\java\com\tp\Item.java">
+</file>
+<file name="C:\Users\Lenovo\Documents\TP\list2\src\main\java\com\tp\Library.java">
+</file>
+<file name="C:\Users\Lenovo\Documents\TP\list2\src\main\java\com\tp\package-info.java">
+</file>
+</checkstyle>

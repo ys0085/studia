@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastermind</title>
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/prism.css">
+</head>
+<body>
+    <script src="../scripts/prism.js"></script>
+    <header>
+        <h1>Mastermind</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Powrót</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Opis Projektu</h2>
+            <p>Mastermind to gra polegająca na zgadywaniu czterocyfrowych liczb według pewnych ustalonych zasad. 
+                Ten projekt to program w języku C, który poprawnie zgadnie wybraną czterocyfrową liczbę w maksymalnie 7 pytaniach.
+            </p>
+            <br>
+            
+                <pre><code class="language-clike">
+    while(round &#60; 9){
+        response = ask(currentGuess);
+        if(response == 40){
+            solFound = 1;
+            break;
+        }
+        removeComb(pG, currentGuess, response);
+        currentGuess[0] = '0';
+        for(int i = 0; i &#60; 1296; i++){
+            if(pG[4*i] != '0'){
+                strncpy(currentGuess, &pG[4*i], 4);
+                
+            }
+        }
+        if(currentGuess[0] == '0') break;
+        round++;
+    }
+                </pre></code>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Krzysztof Kleszcz</p>
+    </footer>
+</body>
+</html>

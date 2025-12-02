@@ -1,0 +1,92 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, total={6in, 9in}]{geometry}
+\usepackage{float}
+
+\title{Lista 4}
+\author{Krzysztof Kleszcz}
+\date{27.01.2025}
+
+\begin{document}
+
+\graphicspath{{zadania/img}}
+
+\maketitle
+
+\section{Wprowadzenie}
+Wszystkie symulacje i obliczenia zostały przeprowadzone w \emph{Pythonie}. Pliki znajdują się w folderze \verb|zadania|.
+
+\section{Zadania}
+
+\paragraph{Zadanie 1}
+Szacowanie "ogonów" rozkładu dwumianowego za pomocą nierówności Markowa i Czebyszewa.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad1.png}
+\end{figure}
+Jak widać na powyższej tabeli, oszacowane wyniki z nierówności Markowa i Czebyszewa są dosyć daleko od dokładnych wartości. Widać jednak, że nierówność Czebyszewa staje się dokładniejsza wraz z wzrostem parametru $N$.
+
+\paragraph{Zadanie 2}
+Błądzenie losowe na liczbach całkowitych.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad2_5.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad2_10.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad2_15.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad2_20.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad2_25.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad2_30.png}
+\end{figure}
+
+Jak widać, wraz ze zwiększającym się $N$ rozkład normalny zbliża się do histogramu wyliczeń empirycznych. Dystrybuanta zdaje się być blisko do prawdziwej wartości dla każdego N.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad2_100.png}
+\end{figure}
+
+Dla $N = 100$ rozkład normalny pokrywa się prawie idealnie z histogramem.
+
+\paragraph{Zadanie 3}
+Błądzenie losowe cz. 2 -- "czas spędzony nad osią OX"
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad3_100.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad3_1000.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad3_10000.png}
+\end{figure}
+
+Histogramy w tym zadaniu są skoncentrowane na brzegach wykresów. Na "chłopski rozum" ma to sens -- gdy im dalej linia jest "nad" osią X, tym jest mniejsza szansa że spadnie poniżej tę oś, i vice versa. Dla $N = 100$ kolumny histogramu są poszarpane i nieregularne, ale dla większych $N$ przypominają już ładne doliny.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{zad3_arcsin.png}
+\end{figure}
+
+Szczyty histogramów blisko pokrywają się z wykresem rozkładu arcusa sinusa.
+
+\end{document}

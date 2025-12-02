@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drzewo binarne</title>
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/prism.css">
+</head>
+<body>
+    <script src="../scripts/prism.js"></script>
+    <header>
+        <h1>Drzewo binarne</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Powrót</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Opis Projektu</h2>
+            <p>
+                Ten projekt to implementacja drzewa binarnego w Java z użyciem architektury klient-serwer.
+                Pozwala na przechowywanie trzech różnych drzew binarnych oraz rysowanie grafów tych drzew. Poniżej znajduje się
+                metoda rekursywna wypisująca całość drzewa binarnego.
+            </p>
+            <br>
+            
+                <pre><code class="language-java">
+    public void print(String prefix, Node&#60;T&#62; node, boolean isLeft){  
+        if(node != null){
+            System.out.println(prefix + (isLeft ? "|----" : "'----") + node.key);
+            print(prefix + (isLeft ? "|    " : "     "), node.left, true);
+            print(prefix + (isLeft ? "|    " : "     "), node.right, false);
+        }
+    }
+                </pre></code>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Krzysztof Kleszcz</p>
+    </footer>
+</body>
+</html>

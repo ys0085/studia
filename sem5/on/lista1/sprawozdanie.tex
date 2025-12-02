@@ -1,0 +1,148 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{%
+Obliczenia naukowe – Lista nr 1\\[0.5em]
+\large Sprawozdanie z laboratorium w języku Julia
+}
+\author{Krzysztof Kleszcz}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Wprowadzenie}
+Celem laboratorium było zapoznanie się z arytmetyką zmiennopozycyjną zgodną ze standardem IEEE~754 oraz z podstawowymi problemami numerycznymi pojawiającymi się w obliczeniach komputerowych. Wszystkie eksperymenty zostały wykonane w języku \textbf{Julia}, który umożliwia łatwe operowanie typami \texttt{Float16}, \texttt{Float32} oraz \texttt{Float64}.
+
+
+
+\section{Zadanie 1 - Rozpoznanie arytmetyki}
+\subsection*{Opis problemu}
+Celem było wyznaczenie maszynowych wartości \texttt{eps}, \texttt{min} oraz \texttt{max} dla różnych precyzji zmiennopozycyjnych oraz porównanie z wartościami zwracanymi przez funkcje systemowe.
+
+\subsection*{Rozwiązanie}
+Zaimplementowano iteracyjne algorytmy:
+\begin{itemize}
+    \item Dla \texttt{macheps}: start od 1.0, dzielenie przez 2 do momentu, aż $1.0 + \epsilon = 1.0$.
+    \item Dla \texttt{min}: analogicznie, od 1.0 w dół aż do $0.0$.
+    \item Dla \texttt{max}: zwiększanie wartości, aż \texttt{isinf(x)} zwróci \texttt{true}.
+\end{itemize}
+
+\subsection*{Wyniki}
+\begin{center}
+    \includegraphics[scale=0.75]{results_img/zad1.png}
+\end{center}
+
+\subsection*{Interpretacja i wnioski}
+Otrzymane wartości są zgodne z normą IEEE~754 i wynikami funkcji \texttt{eps()}, \texttt{nextfloat(0.0)} oraz \texttt{floatmax()}. 
+Wartość \texttt{macheps} odpowiada precyzji $\varepsilon$ arytmetyki, a \texttt{min} jest najmniejszą dodatnią liczbą reprezentowalną (związaną z \texttt{MINsub}).
+
+
+\section{Zadanie 2 - Eksperyment Kahna}
+\subsection*{Opis problemu}
+Sprawdzenie, czy wyrażenie $3(4/3 - 1) - 1$ daje w przybliżeniu wartość \texttt{macheps}.
+
+\subsection*{Wyniki}
+\begin{center}
+\includegraphics{results_img/zad2.png}
+\end{center}
+
+\subsection*{Wnioski}
+Moduł otrzymanego wyniku zgadza się dokładnie z epsilonem maszynowym. 
+
+
+\section{Zadanie 3 - Rozmieszczenie liczb zmiennopozycyjnych}
+\subsection*{Opis problemu}
+Sprawdzenie faktu, że liczby w przedziale $[1, 2]$ są rozmieszczone równomiernie z krokiem $\delta = 2^{-52}$ dla typu \texttt{Float64}.
+
+\subsection*{Rozwiązanie}
+Sprawdzono wartości \texttt{nextfloat(x) - x} dla najmniejszej liczby w przedziale oraz dla losowej liczby z przedziału.
+
+\subsection*{Wyniki}
+\begin{center}
+\includegraphics[scale=0.75]{results_img/zad3.png}
+\end{center}
+
+\subsection*{Wnioski}
+Rozmieszczenie liczb jest proporcjonalne do potęgi dwójki.
+
+\section{Zadanie 4 - Iloczyn odwrotnościowy}
+\subsection*{Opis problemu}
+Poszukiwano najmniejszej liczby $x$ w przedziale $(1, 2)$ takiej, że $x \cdot (1/x) \neq 1$.
+
+\subsection*{Wyniki}
+\begin{center}
+\includegraphics{results_img/zad4.png}
+\end{center}
+Najmniejszą liczbą spełniającą warunek okazało się:
+\[
+x = 1.0000004876006323 \text{ (Float32)} 
+\]
+\[
+x = 1.0000000022204463 \text{ (Float64)}
+\]
+
+\subsection*{Wnioski}
+Drobne odchylenie od jedności wynika z utraty precyzji podczas operacji odwrotności i mnożenia.
+
+
+\section{Zadanie 5 - Iloczyn skalarny}
+\subsection*{Opis problemu}
+Obliczono iloczyn skalarny dwóch wektorów na cztery sposoby i porównano z wartością dokładną $-1.00657107 \times 10^{-11}$.
+
+\subsection*{Wyniki}
+Jako \texttt{delta} oznaczono błąd względny.
+\begin{center}
+\includegraphics[scale=0.75]{results_img/zad5.png}
+\end{center}
+
+\subsection*{Wnioski}
+Kolejność sumowania ma istotny wpływ na błędy i w pojedynczej, i w podwójnej precyzji, choć w podwójnej przcyzji dla metod 1 i 2 wynik jest wyraźnie bliższy oczekiwanemu.
+
+
+\section{Zadanie 6 - Porównanie funkcji $f(x)$ i $g(x)$}
+\subsection*{Opis problemu}
+Porównano wartości:
+\[
+f(x) = \sqrt{x^2+1} - 1, \quad g(x) = \frac{x^2}{\sqrt{x^2+1} + 1}
+\]
+dla $x = 8^{-1}, 8^{-2}, 8^{-3}, \ldots$
+
+\subsection*{Wyniki}
+\begin{center}
+\includegraphics{results_img/zad6_1.png}
+\end{center}
+\begin{center}
+\includegraphics{results_img/zad6_2.png}
+\end{center}
+
+\subsection*{Wnioski}
+Dla małych wartości $x$ wyrażenie $f(x)$ traci precyzję z powodu odejmowania podobnych wartości, co prowadzi do dużych błędów względnych.
+Wyrażenie $g(x)$ jest numerycznie stabilne - eliminuje utratę cyfr znaczących w odejmowaniu podobnych wartości.
+
+
+\section{Zadanie 7 - Przybliżenie pochodnej}
+\subsection*{Opis problemu}
+Dla funkcji $f(x) = \sin x + \cos 3x$ obliczono przybliżoną pochodną w punkcie $x_0=1$ dla $h=2^{-n}$.
+
+\subsection*{Wyniki}
+\begin{center}
+\includegraphics{results_img/zad7.png}
+\end{center}
+
+\subsection*{Wnioski}
+Zmniejszanie $h$ początkowo poprawia dokładność przybliżenia, ale po pewnym punkcie, w tym przypadku w $h = 2^{-29}$ błąd zaczyna rosnąć z powodu błędu równowagi wynikającego z ograniczonej precyzji arytmetyki zmiennopozycyjnej. 
+
+
+\end{document}

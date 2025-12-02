@@ -1,0 +1,170 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, total={6in, 9in}]{geometry}
+\usepackage{float}
+
+\graphicspath{{img/}}
+\title{Lista 1}
+\author{Krzysztof Kleszcz}
+\date{29.10.2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Wprowadzenie}
+Wszystkie przedstawione poniżej całki zostały oszacowane metodą probabilistyczną podaną w zadaniu. 
+Do przeprowadzenia symulacji został użyty generator liczb losowych \emph{Mersenne Twister}.
+\paragraph{Implementacja.}
+Algorytm został zaimplementowany w języku programowania \emph{Java}.
+Plik \verb|L1.jar| jest skompilowany i gotowy do uruchomienia poleceniem 
+\begin{center}
+    \begin{verbatim}
+
+        java -jar L1.jar a b > out.txt
+    \end{verbatim}
+\end{center}
+Parametry \verb|a| i \verb|b| to odpowiednio wybór szacowanej całki \begin{math}
+    (0 - 3)
+\end{math} 
+oraz liczba powtórzeń algorytmu \emph{k}.
+Szczegóły użycia parametrów znajdują się w komentarzach kodu źródłowego, w pliku \verb|App.java|.
+Plik \verb|out.txt| to wybrane przeze mnie wyjście programu.
+
+\paragraph{Wizualizacja.}
+Dane wygenerowane przez program w \emph{Javie} zostały wprowadzone do skryptu w języku \emph{Python} oraz za pomocą 
+biblioteki \emph{matplotlib} ukazane na wykresach. Skrypt znajduje się w pliku \verb|main.py|.
+\newline
+
+Punkty o kolorze niebieskim oznaczają wyniki pojedynczych testów, a punkty o kolorze czerwonym to średnia wartość
+wyników wszystkich testów dla danej liczby losowo wygenerowanych punktów \emph{n}. 
+Zielona prosta to rzeczywista wartość szacowanej całki.
+\pagebreak
+
+\section{Przykłady}
+
+\paragraph{A}
+Szacowanie całki oznaczonej
+
+\[    \int_{0}^{8}  \sqrt[3]{x} \,dx \]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{1x5.png}
+    \begin{center}
+        (a) k = 5
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{1x50.png}
+    \begin{center}
+        (b) k = 50
+    \end{center}
+\end{figure}
+
+\pagebreak
+
+\paragraph{B}
+Przybliżenie całki oznaczonej
+
+\[    \int_{0}^{\pi }  \sin (x) \,dx \]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{2x5.png}
+    \begin{center}
+        (a) k = 5
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{2x50.png}
+    \begin{center}
+        (b) k = 50
+    \end{center}
+\end{figure}
+
+\pagebreak
+
+\paragraph{C}
+Przybliżenie całki oznaczonej
+
+\[    \int_{0}^{1}  4x(1-x)^3 \,dx \]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{3x5.png}
+    \begin{center}
+        (a) k = 5
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{3x50.png}
+    \begin{center}
+        (b) k = 50
+    \end{center}
+\end{figure}
+
+\pagebreak
+
+\paragraph{D}
+Przybliżenie \begin{math}
+    \pi
+\end{math}
+za pomocą całki oznaczonej 
+
+\[    \int_{-1}^{1}  2\sqrt{1-x^2} \,dx \]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{PIx5.png}
+    \begin{center}
+        (a) k = 5
+    \end{center}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{PIx50.png}
+    \begin{center}
+        (b) k = 50
+    \end{center}
+\end{figure}
+
+\pagebreak
+
+\section{Podsumowanie}
+Ten probablisityczny sposób szacowania całek oznaczonych jest dość skuteczny. Dla liczby testów \begin{math}
+    k = 5
+\end{math}
+średnie wyniki dla najwyższych wartości \begin{math}
+    n
+\end{math}
+znajdują się w granicach \begin{math}
+    \pm 1\%
+\end{math}
+rzeczywistej wartości całki. Dla \begin{math}
+    k = 50
+\end{math}
+już od \begin{math}
+    n \approx 500
+\end{math}
+otrzymujemy precyzję bliską \begin{math}
+    \pm 1\%
+\end{math},
+a dla najwyższych \begin{math}
+    n
+\end{math}
+precyzja osiąga około \begin{math}
+    \pm 0.1\%
+\end{math}.
+
+
+
+\end{document}

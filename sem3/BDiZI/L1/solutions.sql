@@ -1,0 +1,219 @@
+1.
+SHOW TABLES;
+
+
+2.
+SELECT title FROM film WHERE length>120;
+
+
+3.
+SELECT title, length FROM film WHERE rating='PG-13' ORDER BY length LIMIT 4;
+
+
+-- a)
+WITH lowest_4 AS (
+    SELECT length
+    FROM film 
+    WHERE rating='PG-13' 
+    GROUP BY length 
+    LIMIT 4
+)
+SELECT title FROM film JOIN lowest_4 ON lowest_4.length = film.length WHERE rating='PG-13';
+
+4.
+SELECT f.title, l.name 
+FROM film f 
+INNER JOIN language l 
+ON l.language_id=f.language_id
+WHERE f.description LIKE '%Drama%'
+;
+
+
+5.
+SELECT title FROM film_list WHERE category='Family' AND description LIKE '%Documentary%';
+
+
+6.
+SELECT title FROM film_list WHERE category = 'Children' AND rating != 'PG-13';
+
+
+7.
+SELECT rating, COUNT(*) AS 'Liczba' FROM film GROUP BY rating;
+
+
+8.
+SELECT DISTINCT f.title
+FROM film f INNER JOIN inventory i
+ON f.film_id=i.film_id
+INNER JOIN rental r
+ON i.inventory_id=r.inventory_id
+WHERE r.rental_date < 20050630 AND r.rental_date > 20050531
+oRDER BY f.title DESC;
+
+
+9.
+SELECT DISTINCT a.actor_id, a.first_name, a.last_name
+FROM actor a INNER JOIN film_actor
+ON a.actor_id = film_actor.actor_id
+INNER JOIN film f
+ON film_actor.film_id = f.film_id
+WHERE f.special_features LIKE '%Deleted Scenes%'
+ORDER BY a.actor_id;
+;
+
+
+10.
+SELECT DISTINCT c.first_name, c.last_name
+FROM customer c
+INNER JOIN rental r ON c.customer_id = r.customer_id
+INNER JOIN payment p ON r.rental_id = p.rental_id
+WHERE p.staff_id != r.staff_id
+;
+
+
+11.
+WITH 
+rental_count AS (
+    SELECT c.first_name, c.last_name, c.customer_id, c.email, COUNT(*) as count
+    FROM customer c
+    INNER JOIN rental r
+    ON c.customer_id = r.customer_id
+    GROUP BY c.customer_id
+),
+temp (num) AS (
+    SELECT count
+    FROM rental_count r
+    WHERE r.email = 'MARY.SMITH@sakilacustomer.org'
+)
+SELECT r.first_name, r.last_name
+FROM temp, rental_count r
+WHERE r.count > temp.num
+;
+
+
+12. 
+SELECT a1.first_name, a1.last_name, a2.first_name, a2.last_name, COUNT(*) AS common_films
+FROM film_actor fa1
+INNER JOIN film_actor fa2 
+ON fa1.film_id = fa2.film_id AND fa1.actor_id < fa2.actor_id
+INNER JOIN actor a1 
+ON fa1.actor_id = a1.actor_id
+INNER JOIN actor a2 
+ON fa2.actor_id = a2.actor_id
+GROUP BY fa1.actor_id, fa2.actor_id
+HAVING common_films > 1;
+
+
+13.
+SELECT DISTINCT a.first_name, a.last_name, a.actor_id
+FROM actor a
+WHERE NOT EXISTS (
+    SELECT * 
+    FROM film f 
+    INNER JOIN film_actor ON film_actor.film_id = f.film_id
+    INNER JOIN actor ON a.actor_id = film_actor.actor_id
+    WHERE f.title LIKE 'C%'
+);
+
+
+14.
+WITH 
+horror_count (actor_id, count) AS (
+    SELECT a.actor_id, COUNT(*)
+    FROM actor a  
+    INNER JOIN film_actor ON film_actor.actor_id = a.actor_id
+    INNER JOIN film_category ON film_category.film_id = film_actor.film_id
+    INNER JOIN category c ON c.category_id = film_category.category_id
+    WHERE c.name = 'Horror'
+    GROUP BY a.actor_id
+    ORDER BY a.actor_id
+),
+
+action_count (actor_id, count) AS (
+    SELECT a.actor_id, COUNT(*)
+    FROM actor a  
+    INNER JOIN film_actor ON film_actor.actor_id = a.actor_id
+    INNER JOIN film_category ON film_category.film_id = film_actor.film_id
+    INNER JOIN category c ON c.category_id = film_category.category_id
+    WHERE c.name = 'Action'
+    GROUP BY a.actor_id
+    ORDER BY a.actor_id
+)
+
+SELECT a.last_name
+FROM horror_count h
+INNER JOIN action_count c
+ON h.actor_id = c.actor_id AND h.count > c.count
+INNER JOIN actor a
+ON h.actor_id = a.actor_id
+;
+
+15.
+WITH
+average_per_day AS (
+    SELECT AVG(amount) AS average, CAST(payment_date AS DATE) AS payment_date
+    FROM payment
+    GROUP BY CAST(payment_date AS DATE)
+),
+
+average_per_customer (customer_id, average) AS (
+    SELECT customer_id, AVG(amount)
+    FROM payment
+    GROUP BY customer_id
+)
+
+SELECT c.first_name, c.last_name
+FROM customer c
+INNER JOIN average_per_customer ac
+ON c.customer_id = ac.customer_id
+INNER JOIN average_per_day ad 
+ON ad.payment_date = '2005-07-30'
+WHERE ad.average > ac.average
+;
+
+16.
+UPDATE film
+SET language_id = (SELECT language_id FROM language WHERE name = 'Italian')
+WHERE film.title = 'YOUNG LANGUAGE'
+;
+
+17.
+INSERT INTO language (name, last_update) 
+VALUES ('Spanish', current_timestamp());
+
+UPDATE film
+SET language_id = (SELECT language_id FROM language WHERE name = 'Spanish')
+WHERE film_id IN (
+    SELECT f.film_id
+    FROM film f
+    JOIN film_actor fa 
+    ON f.film_id = fa.film_id
+    JOIN actor a
+    ON fa.actor_id = a.actor_id
+    WHERE a.first_name = 'ED' AND a.last_name = 'CHASE'
+);
+
+
+18.
+ALTER TABLE language
+ADD COLUMN number_of_films INT;
+
+UPDATE language
+SET language.number_of_films = (
+    SELECT COUNT(*) 
+    FROM film
+    WHERE film.language_id = language.language_id
+);
+
+
+
+19.
+ALTER TABLE film
+DROP COLUMN release_year;
+
+
+
+
+
+
+

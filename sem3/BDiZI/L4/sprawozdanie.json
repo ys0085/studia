@@ -1,0 +1,405 @@
+// .json for syntax highlighting only
+
+
+db.createCollection('authors', {
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+                "name",
+                "country",
+                "birth"
+            ],
+            "properties": {
+                "name": {
+                    "bsonType": "object",
+                    "required": [
+                        "first",
+                        "last"
+                    ],
+                    "properties": {
+                        "first": {
+                            "bsonType": "string",
+                            "description": "must be a string and is required"
+                        },
+                        "last": {
+                            "bsonType": "string",
+                            "description": "must be a string and is required"
+                        }
+                    }
+                },
+                "country": {
+                    "bsonType": "string",
+                    "description": "must be a string and is required"
+                },
+                "birth": {
+                    "bsonType": "date",
+                    "description": "must be a date and is required"
+                },
+                "death": {
+                    "bsonType": ["date", "null"],
+                    "description": "must be a date, is not required"
+                }
+            }
+        }
+    }
+})
+
+
+db.authors.insertMany([
+    {
+        "name": { "first": "J.R.R.", "last": "Tolkien" },
+        "country": "United Kingdom",
+        "birth": new Date('Jan 3, 1892'),
+        "death": new Date('Sep 2, 1973')
+    },
+
+    {
+        "name": { "first": "Bolesław", "last": "Prus" },
+        "country": "Poland",
+        "birth": new Date('Aug 20, 1847'),
+        "death": new Date('May 19, 1912')
+    },
+
+    {
+        "name": { "first": "J.K.", "last": "Rowling" },
+        "country": "United Kingdom",
+        "birth": new Date('Jul 31, 1965'),
+        "death": null
+    },
+
+    {
+        "name": { "first": "Henryk", "last": "Sienkiewicz" },
+        "country": "Poland",
+        "birth": new Date('May 5, 1846'),
+        "death": new Date('Nov 15, 1916')
+    }
+])
+
+db.books.insertMany([
+    {
+        "title": "The Hobbit",
+        "isbn": "9780261102956",
+        "publication_year": 1937,
+        "language": "English",
+        "author": ObjectId("677fe333e781f14948cb0cf2"),
+        "publisher": {
+            "name": "George Allen & Unwin",
+            "country": "UK"
+        }
+    },
+
+    {
+        "title": "The Fellowship of the Ring",
+        "series": "Lord of the Rings",
+        "isbn": "9780007136599",
+        "publication_year": 1954,
+        "language": "English",
+        "author": ObjectId("677fe333e781f14948cb0cf2"),
+        "publisher": {
+            "name": "Some Publisher",
+            "country": "UK"
+        }
+    },
+
+    {
+        "title": "The Two Towers",
+        "series": "Lord of the Rings",
+        "isbn": "9780007136600",
+        "publication_year": 1954,
+        "language": "English",
+        "author": ObjectId("677fe333e781f14948cb0cf2"),
+        "publisher": {
+            "name": "Some Publisher",
+            "country": "UK"
+        }
+    },
+
+    {
+        "title": "The Return of the King",
+        "series": "Lord of the Rings",
+        "isbn": "9780007136601",
+        "publication_year": 1955,
+        "language": "English",
+        "author": ObjectId("677fe333e781f14948cb0cf2"),
+        "publisher": {
+            "name": "Some Publisher",
+            "country": "UK"
+        }
+    }
+
+
+])
+
+
+db.books.insertMany([
+    {
+        "title": "Quo Vadis",
+        "isbn": "978-0-261-10295-6",
+        "publication_year": 1896,
+        "language": "Polish",
+        "author": ObjectId("677fe333e781f14948cb0cf5"),
+        "publisher": {
+            "name": "Some Publisher 2",
+            "country": "Poland"
+        }
+    },
+    {
+        "title": "Krzyżacy",
+        "isbn": "978-0-261-10295-6",
+        "publication_year": 1900,
+        "language": "Polish",
+        "author": ObjectId("677fe333e781f14948cb0cf5"),
+        "publisher": {
+            "name": "Some Publisher 2",
+            "country": "Poland"
+        }
+    },
+    {
+        "title": "Potop",
+        "isbn": "978-0-261-10295-6",
+        "publication_year": 1886,
+        "language": "Polish",
+        "author": ObjectId("677fe333e781f14948cb0cf5"),
+        "publisher": {
+            "name": "Some Publisher 2",
+            "country": "Poland"
+        }
+    }
+])
+
+
+db.createCollection('authors', {
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+                "name",
+                "country",
+                "birth"
+            ],
+            "properties": {
+                "name": {
+                    "bsonType": "object",
+                    "required": [
+                        "first",
+                        "last"
+                    ],
+                    "properties": {
+                        "first": {
+                            "bsonType": "string",
+                            "description": "must be a string and is required"
+                        },
+                        "last": {
+                            "bsonType": "string",
+                            "description": "must be a string and is required"
+                        }
+                    }
+                },
+                "country": {
+                    "bsonType": "string",
+                    "description": "must be a string and is required"
+                },
+                "birth": {
+                    "bsonType": "date",
+                    "description": "must be a date and is required"
+                },
+                "death": {
+                    "bsonType": ["date", "null"],
+                    "description": "must be a date, is not required"
+                }
+            }
+        }
+    }
+})
+
+
+db.createCollection('reviews', {
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "required": [ "book", "reviewer", "rating", "description" ],
+            "properties": {
+                "book": {
+                    "bsonType": "objectId",
+                    "description": "must be a objectId and is required"
+                },
+                "reviewer": {
+                    "bsonType": "string",
+                    "description": "must be a string and is required"
+                },
+                "rating": {
+                    "bsonType": "int",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "description": "must be an integer in [ 1, 2, 3, 4, 5 ] and is required"
+                },
+                "description": {
+                    "bsonType": "string",
+                    "description": "must be a string and is required"
+                }
+            }
+        }
+    }
+})
+
+db.reviews.insertMany([
+    {
+        "book": ObjectId("677fe333e781f14948cb0cfa"),
+        "reviewer": "Adam A",
+        "rating": 5,
+        "description": "..."
+    },
+    {
+        "book": ObjectId("677fe333e781f14948cb0cfa"),
+        "reviewer": "Adam B",
+        "rating": 3,
+        "description": "...!"
+    },
+    {
+        "book": ObjectId("677fe333e781f14948cb0cfa"),
+        "reviewer": "Adam C",
+        "rating": 5,
+        "description": "???"
+    },
+    {
+        "book": ObjectId("677fed65e781f14948cb0cf8"), 
+        "reviewer": "Adam D",
+        "rating": 4,
+        "description": ",,,"
+    },
+    {
+        "book": ObjectId("677fed65e781f14948cb0cf9"), 
+        "reviewer": "Adam E",
+        "rating": 3,
+        "description": ".. ."
+    }
+])
+
+db.authors.updateMany({}, { "$set": { "awards": [] } })
+
+db.books.updateMany({}, { "$set": { "genres": [] } })
+
+db.books.updateOne(
+    { "_id": ObjectId("677fed65e781f14948cb0cf6") },
+    { "$addToSet": { "genres": "Fantasy" } }
+)
+db.books.updateOne(
+    { "_id": ObjectId("677fed65e781f14948cb0cf7") },
+    { "$addToSet": { "genres": "Fantasy" } }
+)
+db.books.updateOne(
+    { "_id": ObjectId("677fed65e781f14948cb0cf8") },
+    { "$addToSet": { "genres": "Fantasy" } }
+)
+db.books.updateOne(
+    { "_id": ObjectId("677fed65e781f14948cb0cf9") },
+    { "$addToSet": { "genres": "Fantasy" } }
+)
+
+
+db.books.updateOne(
+    { "_id": ObjectId("677fed65e781f14948cb0cfa") },
+    { "$addToSet": { "genres": "Classical" } }
+)
+db.books.updateOne(
+    { "_id": ObjectId("677fed65e781f14948cb0cfb") },
+    { "$addToSet": { "genres": "Classical" } }
+)
+db.books.updateOne(
+    { "_id": ObjectId("677fed65e781f14948cb0cfc") },
+    { "$addToSet": { "genres": "Classical" } }
+)
+
+
+// zadanie 3
+
+db.books.find({ "author": db.authors.findOne({ "name.first": "Henryk", "name.last": "Sienkiewicz" })._id })
+
+db.books.find({ "language": "Polish", "genres": "Fantasy" })
+
+db.books.aggregate([
+    {
+        "$lookup": {
+            "from": "reviews",
+            "localField": "_id",
+            "foreignField": "book",
+            "as": "book_reviews"
+        }
+    },
+    {
+        "$addFields": {
+            "average_rating": {
+                "$avg": "$book_reviews.rating"
+            }
+        }
+    },
+    {
+        "$match": {
+            "average_rating": { "$gte": 4 }
+        }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            "title": 1,
+            "isbn": 1,
+            "publication_year": 1,
+            "language": 1,
+            "author": 1,
+            "average_rating": 1
+        }
+    }
+])
+
+db.books.aggregate([
+    {
+        "$lookup": {
+            "from": "authors",
+            "localField": "author",
+            "foreignField": "_id",
+            "as": "author_info"
+        }
+    },
+    {
+        "$unwind": "$author_info"
+    },
+    {
+        "$match": {
+            "author_info.country": "Poland"
+        }
+    },
+    {
+        "$lookup": {
+            "from": "reviews",
+            "localField": "_id",
+            "foreignField": "book",
+            "as": "reviews"
+        }
+    },
+    {
+        "$addFields": {
+            "average_rating": {
+                "$cond": {
+                    "if": { "$gt": [{ "$size": "$reviews" }, 0] },
+                    "then": { "$avg": "$reviews.rating" },
+                    "else": null
+                }
+            }
+        }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            "title": 1,
+            "isbn": 1,
+            "publication_year": 1,
+            "language": 1,
+            "author": {
+                "first": "$author_info.name.first",
+                "last": "$author_info.name.last"
+            },
+            "average_rating": 1
+        }
+    }
+])

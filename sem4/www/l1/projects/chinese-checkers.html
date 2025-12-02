@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chińskie warcaby</title>
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/prism.css">
+</head>
+<body>
+    <script src="../scripts/prism.js"></script>
+    <header>
+        <h1>Chińskie warcaby</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Powrót</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Opis Projektu</h2>
+            <p>Chińskie warcaby (trylma) to rodzaj sześcioosobowy rodzaj warcabów. 
+                Ten projekt to aplikacja w Javie, przez którą można w wiele osób grać w trylmę w dowolną liczbę osób.
+                Obługuje również boty zamiast graczy. Aplikacja działa na architekturze klient-serwer. 
+                Poniżej snippet kodu - metoda szukająca dozwolonych skoków dla pionów na planszy.
+            </p>
+            <br>
+                <pre><code class="language-java">
+    private void exploreJumps(int x, int y, List&#60;Position&#62; validPositions, 
+        BoolMap visited, int[][] directions) {
+        for (int[] dir : directions) {
+            int overX = x + dir[0], overY = y + dir[1];
+            int toX = x + 2 * dir[0], toY = y + 2 * dir[1];
+            if (tiles.getTile(overX, overY) != Tile.EMPTY && 
+                tiles.getTile(toX, toY) == Tile.EMPTY) {
+                Position pos = new Position(toX, toY);
+                if (!validPositions.contains(pos)) {
+                    validPositions.add(pos);
+                    exploreMoves(toX, toY, validPositions, visited, directions, true);
+                }
+            }
+        }
+    }
+                </pre></code>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Krzysztof Kleszcz</p>
+    </footer>
+</body>
+</html>

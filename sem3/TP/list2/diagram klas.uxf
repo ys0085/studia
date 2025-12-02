@@ -1,0 +1,99 @@
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><element><id>UMLClass</id><coordinates><x>356</x><y>296</y><w>192</w><h>440</h></coordinates><panel_attributes>Library
+--
+addCustomer(String, String): void
+removeCustomer(int): void
+addBook(String, String, int): void
+removeBook(int): void
+addItem(int): void
+removeItem(int): void
+
+rentItem(int, int): void
+returnItem(int): void
+
+getItemStock(): ArrayList&lt;Item&gt;
+getCustomerList(): ArrayList&lt;Customer&gt;
+getBookList(): ArrayList&lt;Book&gt;
+
+doPrintActionFeedback(bool): void
+
+printFullStock(): void
+printBookList(): void
+printItemStock(): void
+printCustomerList(): void
+printCustomerRentedItems(int): void
+
+fillSampleStock(): void
+--
+Responsibilities
+-- Zachowuje stan biblioteki
+-- Dodaje i usuwa pozycje
+-- Dodaje i usuwa książki
+-- Dodaje i usuwa klientów
+-- Dostarcza informacje o stanie
+-- Wypozycza ksiazki klientom
+-- Przyjmuje zwroty ksiazek
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>356</x><y>16</y><w>136</w><h>144</h></coordinates><panel_attributes>Book
+--
+-bookID: int
+-title: String
+-author: String
+-releaseYear: int
+--
+getBookID(): int
+getTItle(): String
+getAuthor(): String
+getReleaseYear(): int
+--
+Zawiera informacje o książce
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>44</x><y>0</y><w>192</w><h>192</h></coordinates><panel_attributes>Item
+--
+-itemID: int
+-rented: bool
+-renterID: int
+--
+getBook(): Book
+getItemID(): int
+isRented(): bool
+getCustomerID(): int
+itemRent(int): void
+itemReturn(): void
+--
+-- Zawiera informacje o kopii książki
+-- Da się ją wypożyczyć
+-- Wskazuje na wypozyczajacego klienta</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>44</x><y>296</y><w>176</w><h>168</h></coordinates><panel_attributes>Customer
+--
+ID: int
+firstName: String
+lastName: String
+--
+getID(): int
+getFirstName(): String
+getLastName(): String
+getFullName(): String
+getRentedItemList(): ArrayList&lt;Item&gt;
+printRentedItems(): void
+--
+-- Zawiera informacje o kliencie
+-- Posiada listę wypozyczonch ksiazek</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>228</x><y>80</y><w>144</w><h>40</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=*
+jest kopią &gt;</panel_attributes><additional_attributes>160;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>116</x><y>184</y><w>72</w><h>128</h></coordinates><panel_attributes>lt=-
+m1=0..*
+m2=1
+posiada ^</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>412</x><y>152</y><w>72</w><h>160</h></coordinates><panel_attributes>lt=-&gt;
+m1=0..*
+m2=1
+posiada ^</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>228</x><y>184</y><w>144</w><h>128</h></coordinates><panel_attributes>lt=-&gt;
+m1=0..*
+m2=1
+&lt; posiada </panel_attributes><additional_attributes>10;10;160;140</additional_attributes></element><element><id>Relation</id><coordinates><x>212</x><y>328</y><w>160</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+m1=0..*
+m2=1
+&lt; posiada</panel_attributes><additional_attributes>10;20;180;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>652</x><y>296</y><w>128</w><h>64</h></coordinates><panel_attributes>App
+--
+main(String[]): void
+--
+-- Obsluga klasy Library
+-- Interfejs uzytkownika</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>320</y><w>128</w><h>32</h></coordinates><panel_attributes>lt=-&gt;&gt;
+obsługuje</panel_attributes><additional_attributes>10;20;140;20</additional_attributes></element></diagram>

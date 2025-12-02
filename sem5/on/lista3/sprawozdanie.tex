@@ -1,0 +1,163 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{Obliczenia Naukowe \\ Sprawozdanie - Lista 3}
+\author{Imię i nazwisko}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Wstęp}
+Celem sprawozdania jest zaimpmlementowanie trzech metod numerycznych rozwiązywania równań oraz 
+rozwiązanie zadań 4-6 dotyczących metod numerycznych:
+bisekcji, Newtona oraz siecznych. Dla każdej z metod przedstawiono opis,
+implementację, wyniki obliczeń oraz wnioski.
+
+\section{Zadanie 4}
+Wyznaczyć pierwiastek równania
+\[
+\sin x - \left( \frac{1}{2}x \right)^2 = 0
+\]
+stosując kolejno metody:
+\begin{itemize}
+    \item bisekcji na przedziale $[1.5,2]$,
+    \item Newtona z przybliżeniem początkowym $x_0 = 1.5$,
+    \item siecznych z przybliżeniami $x_0=1$, $x_1=2$.
+\end{itemize}
+Dla każdej metody wykonać obliczenia dla dwóch dokładności:
+$\delta = 10^{-5}$ oraz $\varepsilon = 10^{-5}$.
+
+\subsection{Opis problemu}
+Równanie nieliniowe:
+\[
+f(x)=\sin x - \left(\frac{x}{2}\right)^2
+\]
+ma dokładnie jeden pierwiastek w podanym przedziale. Metody iteracyjne mają na celu przybliżenie jego wartości.
+
+\subsection{Rozwiązanie}
+Zastosowano numeryczne implementacje trzech metod. 
+
+\subsection{Wyniki}
+\begin{itemize}
+    \item Metoda bisekcji: $x \approx 1.9337539672851562$, 16 iteracji
+    \item Metoda Newtona: $x \approx 1.933753779789742$, 5 iteracji
+    \item Metoda siecznych: $x \approx 1.933753644474301$, 4 iteracje
+    \item Prawdziwy wynik: $x = 1.9337537628270212533$
+\end{itemize}
+
+\subsection{Interpretacja wyników}
+Metoda Newtona i metoda siecznych wykazuje najszybszą zbieżność.
+Bisekcja jest najwolniejsza.
+Wszystkie metody wykazały bardzo mały błąd.
+
+\subsection{Wnioski}
+Wszystkie metody poprawnie odnalazły pierwiastek, jednak metoda bisekcji okazała się najwolniejsza.
+
+
+
+% ======================================================================
+\section{Zadanie 5}
+Znaleźć wartość $x$, dla której przecinają się wykresy
+\[
+y=3x, \qquad y=e^x.
+\]
+Metoda bisekcji, dokładność: $\delta=10^{-4}$, $\varepsilon=10^{-4}$.
+
+\subsection{Opis problemu}
+Szukamy rozwiązania równania nieliniowego:
+\[
+f(x) = e^x - 3x.
+\]
+
+\subsection{Rozwiązanie}
+Wybrano dwa przedziały początkowe $[0,1]$ oraz $[1,2]$ ponieważ:
+\[
+f(0)=1>0,\quad f(1)=e-3<0, \quad f(2)=e^2-6>0
+\]
+
+\subsection{Wyniki}
+Rozwiązania przybliżone:
+\[
+x_1 \approx 0.619140625
+\quad
+x_2 \approx 1.5120849609375
+\]
+
+
+\subsection{Wnioski}
+Metoda bisekcji pozwoliła na wyznaczenie miejsca przecięcia z dowolną dokładnością,
+lecz problemem jest wyznaczenie początkowych przedziałów: nie mamy pewności, że to wszystkie rozwiązania.
+
+% ======================================================================
+    \section{Zadanie 6}
+Znaleźć miejsca zerowe funkcji
+\[
+f_1(x)=e^{1-x}-x,\qquad
+f_2(x)=xe^{-x}
+\]
+stosując metody bisekcji, Newtona i siecznych.
+Wymagana dokładność: $\delta=10^{-5}$, $\varepsilon=10^{-5}$.
+
+Sprawdzić także:
+\begin{itemize}
+    \item co się stanie przy wybraniu $x_0 \in (1,\infty)$ w metodzie Newtona dla $f_1$,
+    \item oraz czy można wybrać $x_0=1$ dla $f_2$.
+\end{itemize}
+
+\subsection{Opis problemu}
+Szukamy miejsc zerowych dwóch funkcji nieliniowych, stosując trzy metody
+i porównując ich zbieżność oraz wrażliwość na punkt startowy.
+
+\subsection{Rozwiązanie}
+Dla każdej metody wykonano obliczenia numeryczne. Sprawdzono również,
+czy metoda Newtona jest zbieżna przy wskazanych punktach startowych.
+
+\subsection{Wyniki}
+
+Dla $f_1$:
+\begin{itemize}
+    \item Bisekcja: $x\approx 1.0000038146972656$, przedział $[-5,5]$
+    \item Newton: $x\approx 0.9999984358892101$, $x_0 = 0$
+    \item Sieczne: $x\approx 1.000002147435368$, $x_1 = -2, x_2 = 2$
+\end{itemize}
+Dla $f_2$:
+\begin{itemize}
+    \item Bisekcja: $x\approx -1.9073486328125e-6$, przedział $[-11,10]$
+    \item Newton: $x\approx 14.398662765680003$, $x_0 = 2$
+    \item Sieczne: $x\approx 14.289550062128848$, $x_1 = -2, x_2 = 2$
+\end{itemize}
+Metoda Newtona dla $f_1$, $x>1$:
+\begin{itemize}
+    \item $x_0 = 5$: $x\approx 0.9999996427095682$
+    \item $x_0 = 10$: error 1: przekroczono max. iteracje
+    \item $x_0 = 20$: error 1: przekroczono max. iteracje
+    \item $x_0 >= 100$: error 2: pochodna bliska zeru
+\end{itemize}
+
+Metoda Newtona dla $f_2$, $x\ge1$:
+\begin{itemize}
+    \item $x_0 = 1$: error 2: pochodna bliska zeru
+    \item $x_0 = 5$: $x \approx 15.194283983439147$
+    \item $x_0 = 10$: $x \approx 14.380524159896261$
+    \item $x_0 = 100$: $x = 100$
+    \item $x_0 = 1000$: $x = 1000$
+\end{itemize}
+
+\subsection{Interpretacja wyników}
+\begin{itemize}
+    \item Dla $f_1$ metoda Newtona jest zbieżna dla małych $x_0$, lecz dla większych $x_0$ pochodna jest zbyt mała.
+    \item Dla $f_2$ punkt $x_0=1$ jest niepoprawny, bo $f_2'(1)=0$. Dla dużych $x_0\ge100$ $f_2(x_0)$ jest równe zeru w arytmetyce Float64, więc algorytm zwraca wartość początkową.
+\end{itemize}
+
+\subsection{Wnioski}
+Dla funkcji takich jak $f_1$ i $f_2$, które zbiegają do zera w nieskończoności, 
+należy poprawnie dobrać dane początkowe.
+
+\end{document}
